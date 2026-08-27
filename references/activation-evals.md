@@ -2,6 +2,14 @@
 
 Use these cases when changing the skill description or core workflow. Evaluate both whether the skill activates and whether it preserves scope and authorization.
 
+The canonical cases are machine-readable in `evals/activation-cases.yaml`. Validate their schema with:
+
+```bash
+python tools/score_activation_evals.py evals/activation-cases.yaml
+```
+
+An evaluator records one result per case with `case_id`, observed `activation`, selected `mode`, and `observed_behaviors`. Score the result set with `--results <results.yaml>`. Keep the provider, model/version, reasoning settings, Codex version, date, and environment beside each result artifact. The scorer detects regressions against declared expectations; it does not call a model or claim behavioral quality by itself.
+
 ## Should activate directly
 
 - "$research-driven-project-engineering برای این محصول جدید پژوهش، معماری، roadmap و tracker بساز و بعد مرحله‌ای پیاده‌سازی کن."

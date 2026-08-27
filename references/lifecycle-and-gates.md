@@ -45,7 +45,7 @@ Define behavior before implementation detail:
 - edge, failure, permission, concurrency, recovery, and accessibility states;
 - non-functional requirements and explicit non-goals.
 
-Exit: requirements are testable, internally consistent, versioned, and approved for a new project or major change. Acceptance criteria and benchmark data are frozen before implementation/evaluation.
+Exit: requirements are testable, internally consistent, and versioned. Exploratory contracts may remain mutable during explicitly labeled prototypes, which cannot establish acceptance. Before formal evaluation or an acceptance claim, switch to an evaluation contract and freeze acceptance criteria, benchmark data, model/provider settings when applicable, and environment assumptions.
 
 ## G4 - Architecture and delivery design
 

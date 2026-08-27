@@ -2,6 +2,18 @@
 
 Research exists to improve a pending decision, not to decorate a document.
 
+## Materiality test
+
+Research a choice when one or more of these are true:
+
+- it changes a user-visible, security, privacy, data, compatibility, or operational contract;
+- it is costly to reverse or constrains multiple later slices;
+- it introduces an external dependency, provider, license, standard, or volatile fact;
+- credible alternatives differ materially in risk, maintenance, failure behavior, or total cost;
+- existing evidence is missing, contradicted, expired, or invalidated.
+
+Do not open a research question for a local mechanical choice that preserves an approved contract, is cheap to reverse, follows an established repository convention, and introduces no new risk. If uncertain, write one sentence explaining the possible downstream consequence; if none is credible, treat the choice as non-material.
+
 ## Frame the decision
 
 Before searching, write:
@@ -12,6 +24,8 @@ Before searching, write:
 - evidence needed;
 - freshness requirement;
 - stopping condition.
+
+The stopping condition should name the decision threshold, not a target number of sources. Stop when current evidence distinguishes the viable options or identifies the smallest experiment or owner decision needed; do not continue collecting redundant citations.
 
 ## Source hierarchy
 
@@ -80,5 +94,14 @@ Run a focused research checkpoint:
 - before release claims that depend on current external behavior.
 
 Do not repeat unchanged research for mechanical tasks. Link to the existing ledger entry and revalidate only drift-prone facts.
+
+Every research evidence record declares:
+
+- `freshness_class`: `event_driven`, `short`, `medium`, or `long`;
+- `accessed_at` and the exact source/version reviewed;
+- `valid_until` when a time boundary is meaningful;
+- `invalidation_conditions`, such as a release, policy, price, contract, environment, or assumption change.
+
+Freshness classes are decision aids, not universal time-to-live constants. A stable language semantic may be `long`; current pricing or a security advisory may be `short` or `event_driven`. Revalidate when the named invalidation condition occurs even if `valid_until` has not passed.
 
 At the end of each material implementation slice, ask whether it exposed a new decision, contradicted prior evidence, or changed external assumptions. If yes, reopen the relevant research question before continuing. Research is phase-coupled, not a one-time kickoff ceremony.
