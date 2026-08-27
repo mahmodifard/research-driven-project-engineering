@@ -1,4 +1,4 @@
-name: validate
+name: validate-package-contracts
 
 on:
   push:
@@ -10,10 +10,12 @@ permissions:
   contents: read
 
 jobs:
-  validate-skill:
+  validate-package-contracts:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -21,3 +23,15 @@ jobs:
           cache-dependency-path: requirements-dev.txt
       - run: python -m pip install -r requirements-dev.txt
       - run: python tools/validate_skill.py .
+      - run: python -m unittest discover -s tests -v
+      - run: python tools/score_activation_evals.py evals/activation-cases.yaml
+      - name: Validate canonical history against parent
+        shell: bash
+        run: |
+          if git rev-parse --verify HEAD^ >/dev/null 2>&1; then
+            previous_controls="$(mktemp -d)"
+            git archive HEAD^ assets | tar -x -C "$previous_controls"
+            python tools/validate_project_controls.py assets \
+              --vocabulary assets/project-docs/control-vocabulary.yaml \
+              --previous-root "$previous_controls/assets"
+          fi
