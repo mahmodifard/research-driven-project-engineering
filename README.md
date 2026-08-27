@@ -22,7 +22,7 @@ This skill makes the agent:
 
 1. inspect local reality before editing;
 2. research every material decision using current primary sources and comparable open-source systems;
-3. freeze requirements and success criteria before implementation or evaluation;
+3. keep exploratory requirements mutable, then freeze a versioned evaluation contract before formal measurement or acceptance;
 4. compare alternatives and record uncertainty;
 5. implement bounded vertical slices;
 6. track independent evidence for source/build, contracts, automated tests, sandbox integration, runtime paths, consumer acceptance, and release;
@@ -118,6 +118,10 @@ references/
 assets/project-docs/
 assets/module-pack/
 tools/validate_skill.py
+tools/validate_project_controls.py
+tools/score_activation_evals.py
+evals/activation-cases.yaml
+tests/
 ```
 
 ## Validate
@@ -125,13 +129,17 @@ tools/validate_skill.py
 ```bash
 python -m pip install -r requirements-dev.txt
 python tools/validate_skill.py .
+python -m unittest discover -s tests -v
+python tools/score_activation_evals.py evals/activation-cases.yaml
 ```
 
-Validation checks the Skill frontmatter, metadata, relative links, canonical YAML parsing, duplicate keys, English-only machine artifacts, required envelopes, and accidental path or secret indicators.
+Validation checks the Skill package plus executable control contracts: required record fields, controlled enums and ID prefixes, duplicate IDs, controlled-prefix references, document states, and machine-artifact invariants. The history-aware project-control validator can additionally check revision increments, legal task transitions, immutable evidence, and append-only fields against a previous control directory.
+
+A green workflow means package and declared semantic contracts passed. It does **not** mean the Skill activated correctly on a model, improved a real project, passed a consumer runtime path, or is production-mature. Behavioral runs and real-project measurements remain separate evidence.
 
 ## Status
 
-The initial public candidate is `0.1.0`. The skill has passed structural validation, but continued behavioral evaluation against real projects is expected before a `1.0.0` stability claim.
+The public candidate is `0.2.0`. It has structural and semantic contract validation plus a provider-neutral activation-eval manifest and scorer. It has not yet accumulated a multi-model regression baseline or controlled evidence across representative real projects; those remain required before a `1.0.0` stability claim.
 
 ## License
 

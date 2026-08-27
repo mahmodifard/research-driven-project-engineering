@@ -11,6 +11,15 @@ from typing import Any
 
 import yaml
 
+try:
+    from control_validation import validate_control_directory
+    from score_activation_evals import load_mapping as load_eval_mapping
+    from score_activation_evals import validate_cases
+except ModuleNotFoundError:  # Supports module-style execution in tests.
+    from tools.control_validation import validate_control_directory
+    from tools.score_activation_evals import load_mapping as load_eval_mapping
+    from tools.score_activation_evals import validate_cases
+
 
 ARABIC_SCRIPT = re.compile(r"[\u0600-\u06ff]")
 FRONTMATTER = re.compile(r"^---\n(?P<body>.*?)\n---", re.DOTALL)
@@ -150,6 +159,29 @@ def validate_canonical_assets(root: Path, errors: list[str]) -> None:
             errors.append(f"{relative}: machine_readable must be true")
 
 
+def validate_semantic_contracts(root: Path, errors: list[str]) -> None:
+    errors.extend(
+        f"canonical controls: {error}"
+        for error in validate_control_directory(
+            root / "assets",
+            root / "assets" / "project-docs" / "control-vocabulary.yaml",
+        )
+    )
+
+
+def validate_activation_eval_manifest(root: Path, errors: list[str]) -> None:
+    path = root / "evals" / "activation-cases.yaml"
+    if not path.is_file():
+        errors.append("evals/activation-cases.yaml is missing")
+        return
+    try:
+        suite = load_eval_mapping(path)
+    except (OSError, ValueError, yaml.YAMLError) as exc:
+        errors.append(f"evals/activation-cases.yaml: {exc}")
+        return
+    errors.extend(f"evals/activation-cases.yaml: {error}" for error in validate_cases(suite))
+
+
 def validate_relative_links(root: Path, errors: list[str]) -> None:
     for path in sorted(root.rglob("*.md")):
         text = path.read_text(encoding="utf-8")
@@ -186,6 +218,8 @@ def main() -> int:
     validate_skill_frontmatter(root, errors)
     validate_agent_metadata(root, errors)
     validate_canonical_assets(root, errors)
+    validate_semantic_contracts(root, errors)
+    validate_activation_eval_manifest(root, errors)
     validate_relative_links(root, errors)
     scan_sensitive_content(root, errors)
     if errors:

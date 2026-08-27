@@ -92,3 +92,21 @@ Before updating a canonical file:
 6. validate YAML syntax, required fields, enum values, unique IDs, and references;
 7. report changed record IDs, not line counts.
 
+## Executable validation
+
+The canonical vocabulary is executable, not descriptive only. Validate an instantiated control directory with:
+
+```bash
+python tools/validate_project_controls.py .project \
+  --vocabulary .project/control-vocabulary.yaml
+```
+
+For a change that must preserve history and legal transitions, materialize the prior revision in a separate read-only directory and run:
+
+```bash
+python tools/validate_project_controls.py .project \
+  --vocabulary .project/control-vocabulary.yaml \
+  --previous-root .project-previous
+```
+
+The history-aware pass checks semantic revision increments, legal task state transitions, immutable evidence records, and declared append-only fields. It also checks record contracts, controlled enums and ID prefixes, duplicate IDs, and dangling references with controlled prefixes. It cannot prove that a cited artifact, command, environment, or observed result is truthful; those remain evidence-quality and runtime gates.

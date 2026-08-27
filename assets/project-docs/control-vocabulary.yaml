@@ -1,15 +1,21 @@
 schema_version: "1.0"
 document_type: "control_vocabulary"
 document_id: "CONTROL-VOCABULARY"
-revision: 1
+revision: 2
 language: "en"
 machine_readable: true
 status: "active"
 created_at: null
-updated_at: null
+updated_at: "2026-08-27T17:53:08Z"
 owners: []
 source_refs: []
 enums:
+  document_status:
+    - "draft"
+    - "proposed"
+    - "active"
+    - "superseded"
+    - "retired"
   workflow_state:
     - "planned"
     - "researching"
@@ -69,8 +75,29 @@ enums:
     - "reviewer_read_only"
     - "coordinator_read_only"
     - "runtime_validator"
+  blocker_status:
+    - "open"
+    - "resolved"
+    - "deferred"
+  lease_status:
+    - "proposed"
+    - "active"
+    - "expired"
+    - "released"
+    - "revoked"
+  contract_mode:
+    - "exploratory"
+    - "evaluation"
+  research_freshness:
+    - "event_driven"
+    - "short"
+    - "medium"
+    - "long"
 record_contracts:
   gate:
+    id_prefix: "gate"
+    enum_fields:
+      decision: "gate_decision"
     required_fields:
       - "id"
       - "title"
@@ -81,6 +108,7 @@ record_contracts:
     append_only_fields:
       - "decision_history"
   phase:
+    id_prefix: "phase"
     required_fields:
       - "id"
       - "outcome"
@@ -90,6 +118,9 @@ record_contracts:
       - "exit_gate_refs"
       - "non_goals"
   task:
+    id_prefix: "task"
+    enum_fields:
+      workflow_state: "workflow_state"
     required_fields:
       - "id"
       - "title"
@@ -105,6 +136,10 @@ record_contracts:
     append_only_fields:
       - "status_transition_refs"
   evidence:
+    id_prefix: "evidence"
+    enum_fields:
+      lane: "evidence_lane"
+      result: "evidence_result"
     required_fields:
       - "id"
       - "subject_refs"
@@ -118,7 +153,28 @@ record_contracts:
       - "limitations"
       - "source_refs"
     immutable_after_append: true
+  research_evidence:
+    id_prefix: "evidence"
+    required_fields:
+      - "id"
+      - "research_question_refs"
+      - "evidence_kind"
+      - "claim"
+      - "source_url"
+      - "source_version"
+      - "accessed_at"
+      - "freshness_class"
+      - "valid_until"
+      - "invalidation_conditions"
+      - "limitations"
+      - "source_refs"
+    enum_fields:
+      freshness_class: "research_freshness"
+    immutable_after_append: true
   blocker:
+    id_prefix: "blocker"
+    enum_fields:
+      status: "blocker_status"
     required_fields:
       - "id"
       - "subject_refs"
@@ -128,6 +184,7 @@ record_contracts:
       - "owner_ref"
       - "status"
   contract:
+    id_prefix: "contract"
     required_fields:
       - "id"
       - "owner_module_ref"
@@ -138,6 +195,9 @@ record_contracts:
       - "security_boundary_refs"
       - "test_refs"
   lease:
+    id_prefix: "lease"
+    enum_fields:
+      status: "lease_status"
     required_fields:
       - "id"
       - "owner_session_ref"
@@ -149,6 +209,7 @@ record_contracts:
     append_only_fields:
       - "events"
   handoff:
+    id_prefix: "handoff"
     required_fields:
       - "id"
       - "from_session_ref"
@@ -159,6 +220,69 @@ record_contracts:
       - "evidence_refs"
       - "blocker_refs"
       - "next_action"
+artifact_contracts:
+  roadmap:
+    collections:
+      gates: "gate"
+      phases: "phase"
+  implementation_tracker:
+    collections:
+      tasks: "task"
+      evidence_records: "evidence"
+      blockers: "blocker"
+  architecture:
+    collections:
+      contracts: "contract"
+  research_ledger:
+    collections:
+      evidence_records: "research_evidence"
+  parallel_work_coordination:
+    collections:
+      leases: "lease"
+      proposed_evidence: "evidence"
+      handoffs: "handoff"
+document_enum_fields:
+  product_spec:
+    contract.mode: "contract_mode"
+  progress_review:
+    verdict: "progress_verdict"
+  verification_report:
+    decision: "delivery_decision"
+  parallel_workstream:
+    role: "participant_role"
+    workflow_state: "workflow_state"
+state_transitions:
+  workflow_state:
+    planned:
+      - "researching"
+      - "blocked"
+      - "ready"
+      - "deferred"
+    researching:
+      - "blocked"
+      - "ready"
+      - "deferred"
+    blocked:
+      - "researching"
+      - "ready"
+      - "deferred"
+    ready:
+      - "in_progress"
+      - "blocked"
+      - "deferred"
+    in_progress:
+      - "implemented"
+      - "blocked"
+      - "ready"
+      - "deferred"
+    implemented:
+      - "in_progress"
+      - "blocked"
+      - "deferred"
+    deferred:
+      - "planned"
+      - "researching"
+      - "blocked"
 id_prefixes:
   requirement: "REQ-"
   acceptance: "AC-"

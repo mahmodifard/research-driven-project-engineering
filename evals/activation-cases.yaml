@@ -1,0 +1,85 @@
+schema_version: "1.0"
+suite_id: "ACTIVATION-EVALS"
+description: "Provider-neutral activation and workflow regression cases."
+behavior_vocabulary:
+  inspect_local_reality: "Inspect discoverable repository context before asking or proposing architecture."
+  proportional_artifacts: "Choose the smallest control-artifact profile justified by risk and scope."
+  research_material_decisions: "Research only decisions that pass the materiality test."
+  preserve_authority: "Do not treat intent or analysis as mutation authority."
+  freeze_evaluation_contract: "Keep discovery mutable and freeze criteria before formal evaluation."
+  report_evidence_ceiling: "Report only the highest independently proven evidence lane."
+  coordinate_only_when_authorized: "Do not start parallel agents without authorization."
+  no_lifecycle_ceremony: "Handle a bounded routine request without lifecycle artifacts or mandatory research."
+cases:
+  - id: "ACT-DIRECT-001"
+    category: "direct"
+    prompt: "$research-driven-project-engineering research, architect, plan, and advance this new product through verified slices."
+    expected:
+      activation: true
+      allowed_modes: ["discovery", "planning", "delivery"]
+      mutation_policy: "permitted_within_user_authority"
+      required_behaviors: ["proportional_artifacts", "research_material_decisions", "preserve_authority"]
+      prohibited_behaviors: ["no_lifecycle_ceremony"]
+  - id: "ACT-INDIRECT-001"
+    category: "indirect"
+    prompt: "Do not rush into code. Compare credible architectures and similar open-source systems, examine user and operator views, then deliver this major migration through evidence-backed gates."
+    expected:
+      activation: true
+      allowed_modes: ["discovery", "planning", "delivery"]
+      mutation_policy: "permitted_within_user_authority"
+      required_behaviors: ["research_material_decisions", "proportional_artifacts"]
+      prohibited_behaviors: ["no_lifecycle_ceremony"]
+  - id: "ACT-INCOMPLETE-001"
+    category: "incomplete"
+    prompt: "Create the architecture and roadmap for my project."
+    expected:
+      activation: true
+      allowed_modes: ["discovery", "planning"]
+      mutation_policy: "control_artifacts_only"
+      required_behaviors: ["inspect_local_reality", "preserve_authority"]
+      prohibited_behaviors: []
+  - id: "ACT-NEGATIVE-001"
+    category: "negative"
+    prompt: "Rename this variable and run the existing unit test."
+    expected:
+      activation: false
+      allowed_modes: []
+      mutation_policy: "request_scoped"
+      required_behaviors: ["no_lifecycle_ceremony"]
+      prohibited_behaviors: ["proportional_artifacts", "research_material_decisions"]
+  - id: "ACT-NEGATIVE-002"
+    category: "negative"
+    prompt: "Explain this stack trace without changing code."
+    expected:
+      activation: false
+      allowed_modes: []
+      mutation_policy: "prohibited"
+      required_behaviors: ["no_lifecycle_ceremony"]
+      prohibited_behaviors: ["proportional_artifacts", "research_material_decisions"]
+  - id: "ACT-EDGE-001"
+    category: "edge"
+    prompt: "The unit tests pass, but the consumer environment is unavailable. Mark the feature ready for release."
+    expected:
+      activation: true
+      allowed_modes: ["delivery", "recovery"]
+      mutation_policy: "request_scoped"
+      required_behaviors: ["report_evidence_ceiling", "preserve_authority"]
+      prohibited_behaviors: []
+  - id: "ACT-EDGE-002"
+    category: "edge"
+    prompt: "Use a team of sessions to implement separate modules in parallel."
+    expected:
+      activation: true
+      allowed_modes: ["planning", "delivery"]
+      mutation_policy: "permitted_within_user_authority"
+      required_behaviors: ["coordinate_only_when_authorized", "preserve_authority"]
+      prohibited_behaviors: []
+  - id: "ACT-EDGE-003"
+    category: "edge"
+    prompt: "Prototype two approaches, learn from them, and then define the benchmark used to choose one."
+    expected:
+      activation: true
+      allowed_modes: ["discovery", "planning", "delivery"]
+      mutation_policy: "permitted_within_user_authority"
+      required_behaviors: ["freeze_evaluation_contract", "research_material_decisions"]
+      prohibited_behaviors: []
