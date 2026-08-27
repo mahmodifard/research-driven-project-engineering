@@ -1,0 +1,45 @@
+schema_version: "1.0"
+document_type: "module_manifest"
+document_id: "MODULE-000"
+revision: 1
+language: "en"
+machine_readable: true
+status: "draft"
+created_at: null
+updated_at: null
+owners: []
+source_refs: []
+module_id: null
+name: null
+bounded_capability: null
+parent_project_ref: "PROJECT-CONTROL-INDEX"
+repository_paths: []
+runtime_components: []
+owned_requirement_refs: []
+owned_contract_refs: []
+consumed_contract_refs: []
+data_ownership_refs: []
+dependency_module_refs: []
+release_independence: "unknown"
+control_artifacts:
+  product_spec: "product-spec.yaml"
+  research_ledger: "research-ledger.yaml"
+  architecture: "architecture.yaml"
+  roadmap: "roadmap.yaml"
+  implementation_tracker: "implementation-tracker.yaml"
+  project_state: "project-state.yaml"
+  test_strategy: "test-strategy.yaml"
+  decisions_dir: "decisions"
+  evidence_dir: "evidence"
+template_sources:
+  product_spec: "../project-docs/product-spec.yaml"
+  research_ledger: "../project-docs/research-ledger.yaml"
+  architecture: "../project-docs/architecture.yaml"
+  roadmap: "../project-docs/roadmap.yaml"
+  implementation_tracker: "../project-docs/implementation-tracker.yaml"
+  project_state: "../project-docs/project-state.yaml"
+  test_strategy: "../project-docs/test-strategy.yaml"
+entry_gate_refs: []
+exit_gate_refs: []
+integration_gate_refs: []
+history: []
