@@ -1,17 +1,22 @@
 schema_version: "1.0"
 document_type: "research_ledger"
 document_id: "RESEARCH-LEDGER"
-revision: 1
+revision: 2
 language: "en"
 machine_readable: true
 status: "draft"
 created_at: null
-updated_at: null
+updated_at: "2026-08-27T17:53:08Z"
 owners: []
 source_refs: []
 scope_ref: "PROJECT-BRIEF"
 last_refreshed_at: null
 drift_sensitive_claim_ids: []
+freshness_policy:
+  event_driven: "revalidate_on_named_external_change"
+  short: "revalidate_within_days_or_before_decision"
+  medium: "revalidate_within_weeks_or_before_release"
+  long: "revalidate_on_version_or_assumption_change"
 research_questions: []
 evidence_records: []
 open_source_precedents: []
@@ -19,4 +24,3 @@ alternatives: []
 decisions: []
 unresolved_conflicts: []
 history: []
-
