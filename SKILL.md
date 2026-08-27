@@ -11,12 +11,12 @@ Build durable software through research, explicit decisions, small verified slic
 
 - Preserve the user's product intent, scope, technology choices, authorization boundaries, and existing contracts.
 - For a brownfield system, inspect the actual repository, configuration, tests, history, and runtime path before proposing architecture.
-- Research every material product, architecture, security, data, dependency, UX, and delivery decision before committing to it. Do not browse for trivial mechanical edits that introduce no new decision.
+- Research each decision that passes the materiality test in [references/research-protocol.md](references/research-protocol.md). Do not treat every implementation choice as material, and do not browse for trivial mechanics or decisions already covered by current evidence.
 - Prefer current primary sources, official documentation, standards, papers, maintainer repositories, and well-maintained analogous open-source projects. Record citations, versions, dates, licenses, applicability, and material disagreements.
 - Compare credible alternatives. Do not select the first plausible framework, pattern, repository, or direct implementation path.
 - Treat documents as decision and execution controls, not as proof that a capability exists.
 - Never call work `done` merely because code exists, compiles, tests pass in isolation, or an endpoint returns success.
-- Freeze success criteria before implementation or evaluation. If a criterion changes, version the contract and explain why; never silently move the goalposts to fit the result.
+- Keep exploratory requirements explicitly mutable while prototyping. Freeze the evaluation contract, benchmark, and success criteria before formal measurement or acceptance claims. If a frozen criterion changes, version the contract and explain why; never silently move the goalposts to fit the result.
 - Measure progress as a verified change in product capability, risk, or knowledge. Commits, generated documents, test count, and visible activity are not progress by themselves.
 - Keep read-only analysis separate from implementation. A request to research, assess, design, plan, or audit does not authorize source changes.
 - Require explicit approval before external writes, deployment, publication, production mutation, credential or permission changes, purchases, or destructive actions.
@@ -43,6 +43,8 @@ Instantiate and preserve `control-vocabulary.yaml` with the control pack. Its en
 - **Small bounded feature:** one combined feature spec plus tracker and verification evidence may be enough.
 - **Substantial feature or integration:** use product spec, research ledger, architecture/plan, tracker, test strategy, and verification report.
 - **New product or multi-phase epic:** use the full English, machine-first YAML template pack under [assets/project-docs](assets/project-docs), including project brief, UX view matrix, roadmap, and ADRs.
+
+Choose the lightest profile whose omitted uncertainty could not invalidate later work. Do not create an artifact merely because a template exists; create it when it owns a decision, contract, state, or evidence that another artifact cannot own safely.
 
 `roadmap.yaml` is the phase/gate source of truth. `implementation-tracker.yaml` is the task/status/evidence source of truth. `product-spec.yaml` owns behavior and acceptance criteria. ADR records own durable architecture decisions. `project-state.yaml` is a derived operational snapshot and must not be updated by documentation activity alone.
 
@@ -97,10 +99,10 @@ Use these workflow states exactly:
 
 `PLANNED` -> `RESEARCHING` -> `READY` -> `IN_PROGRESS` -> `IMPLEMENTED`
 
-Track evidence independently across source/build, contract, automated tests, integration/sandbox, runtime, and consumer/customer lanes. Use `BLOCKED` for a named unmet dependency or decision, and `DEFERRED` only with an explicit owner/reason and impact. Evidence in one lane never implies evidence in another.
+Track evidence independently across all seven canonical lanes: source/build, contract, automated tests, integration/sandbox, runtime path, consumer acceptance, and release. Use `BLOCKED` for a named unmet dependency or decision, and `DEFERRED` only with an explicit owner/reason and impact. Evidence in one lane never implies evidence in another.
 
 Finish with a concise decision report containing scope, artifact/commit/environment, evidence reached, acceptance results, unresolved gaps, risks, and the next action. Never describe planned, documented, mocked, or build-only work as deployed or consumer-ready.
 
 ## Maintain this skill
 
-When changing its trigger or workflow, use [references/activation-evals.md](references/activation-evals.md) to test direct, indirect, incomplete, negative, and edge-case requests.
+When changing its trigger or workflow, use [references/activation-evals.md](references/activation-evals.md) and the machine-readable cases under [evals](evals) to test direct, indirect, incomplete, negative, and edge-case requests. Structural CI does not substitute for recorded model runs or real-project evidence.
