@@ -1,0 +1,4 @@
+interface:
+  display_name: "Research-Driven Project Engineering"
+  short_description: "Machine-first research, architecture, and delivery control"
+  default_prompt: "Use $research-driven-project-engineering to research, design, and advance this project with machine-first control artifacts, evidence-backed gates, and coordinated module work."
