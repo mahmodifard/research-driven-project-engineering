@@ -1,0 +1,30 @@
+schema_version: "1.0"
+document_type: "product_spec"
+document_id: "PRODUCT-SPEC"
+revision: 1
+language: "en"
+machine_readable: true
+status: "draft"
+created_at: null
+updated_at: null
+owners: []
+source_refs: []
+project_brief_ref: "PROJECT-BRIEF"
+research_decision_refs: []
+contract:
+  version: "0.1.0"
+  frozen_at: null
+  approved_by: []
+  baseline_artifact_refs: []
+  baseline_environment_refs: []
+  change_policy: "new_version_required_after_freeze"
+personas: []
+jobs: []
+journeys: []
+requirements: []
+acceptance_criteria: []
+non_functional_requirements: []
+edge_and_failure_states: []
+non_goals: []
+change_history: []
+

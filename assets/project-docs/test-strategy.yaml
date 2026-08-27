@@ -1,0 +1,33 @@
+schema_version: "1.0"
+document_type: "test_strategy"
+document_id: "TEST-STRATEGY"
+revision: 1
+language: "en"
+machine_readable: true
+status: "draft"
+created_at: null
+updated_at: null
+owners: []
+source_refs: []
+product_spec_ref: "PRODUCT-SPEC"
+architecture_ref: "ARCHITECTURE"
+candidate_artifact_refs: []
+environment_refs: []
+fixture_and_dataset_versions: []
+risk_coverage: []
+test_layers: []
+acceptance_traceability: []
+quality_controls:
+  pre_fix_failure_required_when_practical: true
+  domain_outcome_assertions_required: true
+  benchmark_frozen_before_evaluation: true
+  failed_runs_preserved: true
+  ambient_state_declared: true
+release_rules:
+  required_evidence_lanes: []
+  no_go_conditions: []
+  authorized_side_effects: []
+  rollback_recovery_scenarios: []
+deferred_coverage: []
+history: []
+

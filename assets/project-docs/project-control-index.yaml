@@ -1,0 +1,22 @@
+schema_version: "1.0"
+document_type: "project_control_index"
+document_id: "PROJECT-CONTROL-INDEX"
+revision: 1
+language: "en"
+machine_readable: true
+status: "draft"
+created_at: null
+updated_at: null
+owners: []
+source_refs: []
+project_id: null
+canonical_root: ".project"
+control_vocabulary_ref: "CONTROL-VOCABULARY"
+artifacts: []
+modules: []
+cross_module_contract_refs: []
+shared_gate_refs: []
+coordination_ref: null
+inconsistencies: []
+history: []
+

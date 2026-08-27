@@ -1,0 +1,32 @@
+schema_version: "1.0"
+document_type: "project_state"
+document_id: "PROJECT-STATE"
+revision: 1
+language: "en"
+machine_readable: true
+status: "draft"
+created_at: null
+updated_at: null
+owners: []
+source_refs: []
+derived_from:
+  roadmap_revision_ref: null
+  tracker_revision_ref: null
+  module_revision_refs: []
+  evidence_refs: []
+snapshot:
+  as_of: null
+  repository: null
+  commit: null
+  artifact_refs: []
+  environment_refs: []
+  evidence_freshness: null
+capabilities: []
+module_rollup: []
+active_workstreams: []
+runtime_components: []
+known_limitations: []
+risks: []
+inconsistencies: []
+history: []
+

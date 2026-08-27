@@ -1,0 +1,39 @@
+schema_version: "1.0"
+document_type: "progress_review"
+document_id: "PROGRESS-REVIEW-000"
+revision: 1
+language: "en"
+machine_readable: true
+status: "draft"
+created_at: null
+updated_at: null
+owners: []
+source_refs: []
+comparison_window:
+  from_snapshot_ref: null
+  to_snapshot_ref: null
+  repository: null
+  environment_refs: []
+  frozen_gate_version_at_start: null
+  current_gate_version: null
+delta_records: []
+evidence_separation: []
+goalpost_audit:
+  requirement_changes: []
+  threshold_changes: []
+  dataset_changes: []
+  prompt_model_provider_changes: []
+  environment_changes: []
+  post_result_changes: []
+  hidden_or_overwritten_failures: []
+  documentation_overclaims: []
+verdict: "indeterminate"
+verdict_evidence_refs: []
+capability_gains: []
+risk_reductions: []
+knowledge_gains: []
+activity_only: []
+regressions: []
+blocker_refs: []
+next_action: null
+

@@ -1,0 +1,40 @@
+schema_version: "1.0"
+document_type: "implementation_tracker"
+document_id: "IMPLEMENTATION-TRACKER"
+revision: 1
+language: "en"
+machine_readable: true
+status: "draft"
+created_at: null
+updated_at: null
+owners: []
+source_refs: []
+scope:
+  level: "project"
+  owner_ref: "PROJECT-CONTROL-INDEX"
+roadmap_ref: "ROADMAP"
+snapshot:
+  captured_at: null
+  repository: null
+  branch: null
+  commit: null
+  dirty_state: "unknown"
+  environment_refs: []
+  concurrent_work_refs: []
+  active_contract_versions: []
+  current_task_ref: null
+  next_ready_task_ref: null
+tasks: []
+evidence_records: []
+blockers: []
+decision_refs: []
+run_history: []
+status_transitions: []
+handoff:
+  capability_gains: []
+  risk_reductions: []
+  regressions_or_debt: []
+  criteria_changes: []
+  next_action: null
+  required_authority: null
+

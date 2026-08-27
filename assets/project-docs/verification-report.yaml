@@ -1,0 +1,32 @@
+schema_version: "1.0"
+document_type: "verification_report"
+document_id: "VERIFICATION-REPORT-000"
+revision: 1
+language: "en"
+machine_readable: true
+status: "draft"
+created_at: null
+updated_at: null
+owners: []
+source_refs: []
+decision: "no_go"
+required_gate_ref: null
+scope_refs: []
+candidate:
+  artifact_refs: []
+  commit: null
+  configuration_refs: []
+  environment_refs: []
+verification_time: null
+evidence_by_lane: []
+acceptance_results: []
+consumer_paths: []
+failure_recovery_results: []
+unverified_items: []
+deferred_items: []
+blocker_refs: []
+decision_rationale: null
+generalization_limits: []
+next_action: null
+required_owner_or_authority: null
+

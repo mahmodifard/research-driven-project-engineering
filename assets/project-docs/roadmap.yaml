@@ -1,0 +1,28 @@
+schema_version: "1.0"
+document_type: "roadmap"
+document_id: "ROADMAP"
+revision: 1
+language: "en"
+machine_readable: true
+status: "draft"
+created_at: null
+updated_at: null
+owners: []
+source_refs: []
+scope:
+  level: "project"
+  owner_ref: "PROJECT-CONTROL-INDEX"
+project_brief_ref: "PROJECT-BRIEF"
+product_spec_ref: "PRODUCT-SPEC"
+architecture_ref: "ARCHITECTURE"
+target_outcome_refs: []
+non_goal_refs: []
+gates: []
+phases: []
+module_refs: []
+cross_module_dependencies: []
+integration_gates: []
+release_gates: []
+decision_points: []
+change_history: []
+

@@ -1,0 +1,192 @@
+schema_version: "1.0"
+document_type: "control_vocabulary"
+document_id: "CONTROL-VOCABULARY"
+revision: 1
+language: "en"
+machine_readable: true
+status: "active"
+created_at: null
+updated_at: null
+owners: []
+source_refs: []
+enums:
+  workflow_state:
+    - "planned"
+    - "researching"
+    - "blocked"
+    - "ready"
+    - "in_progress"
+    - "implemented"
+    - "deferred"
+  evidence_result:
+    - "not_run"
+    - "pass"
+    - "fail"
+    - "partial"
+    - "not_applicable"
+    - "blocked"
+  evidence_lane:
+    - "source_build"
+    - "contract"
+    - "automated_test"
+    - "integration_sandbox"
+    - "runtime_path"
+    - "consumer_acceptance"
+    - "release"
+  gate_decision:
+    - "pending"
+    - "pass"
+    - "conditional"
+    - "blocked"
+  delivery_decision:
+    - "go"
+    - "conditional"
+    - "no_go"
+  capability_delivery:
+    - "planned"
+    - "designed"
+    - "implemented"
+  capability_verification:
+    - "unverified"
+    - "pass"
+    - "fail"
+    - "partial"
+  capability_release:
+    - "not_eligible"
+    - "eligible"
+    - "released"
+    - "retired"
+  progress_verdict:
+    - "real_progress"
+    - "partial_progress"
+    - "activity_without_proof"
+    - "regression"
+    - "indeterminate"
+  participant_role:
+    - "integrator"
+    - "module_writer"
+    - "researcher_read_only"
+    - "reviewer_read_only"
+    - "coordinator_read_only"
+    - "runtime_validator"
+record_contracts:
+  gate:
+    required_fields:
+      - "id"
+      - "title"
+      - "owner_ref"
+      - "required_evidence_refs"
+      - "decision"
+      - "blocker_refs"
+    append_only_fields:
+      - "decision_history"
+  phase:
+    required_fields:
+      - "id"
+      - "outcome"
+      - "dependency_refs"
+      - "slice_refs"
+      - "entry_gate_refs"
+      - "exit_gate_refs"
+      - "non_goals"
+  task:
+    required_fields:
+      - "id"
+      - "title"
+      - "requirement_refs"
+      - "acceptance_refs"
+      - "slice_ref"
+      - "dependency_refs"
+      - "workflow_state"
+      - "owner_ref"
+      - "scope"
+      - "validation_refs"
+      - "risk_refs"
+    append_only_fields:
+      - "status_transition_refs"
+  evidence:
+    required_fields:
+      - "id"
+      - "subject_refs"
+      - "lane"
+      - "result"
+      - "artifact_refs"
+      - "environment_refs"
+      - "action"
+      - "observed_at"
+      - "assertions"
+      - "limitations"
+      - "source_refs"
+    immutable_after_append: true
+  blocker:
+    required_fields:
+      - "id"
+      - "subject_refs"
+      - "description"
+      - "impact"
+      - "required_evidence_or_decision"
+      - "owner_ref"
+      - "status"
+  contract:
+    required_fields:
+      - "id"
+      - "owner_module_ref"
+      - "consumer_module_refs"
+      - "version"
+      - "compatibility_policy"
+      - "failure_behavior"
+      - "security_boundary_refs"
+      - "test_refs"
+  lease:
+    required_fields:
+      - "id"
+      - "owner_session_ref"
+      - "scope_refs"
+      - "allowed_actions"
+      - "issued_at"
+      - "review_or_expiry_at"
+      - "status"
+    append_only_fields:
+      - "events"
+  handoff:
+    required_fields:
+      - "id"
+      - "from_session_ref"
+      - "to_owner_ref"
+      - "baseline_ref"
+      - "changed_record_ids"
+      - "artifact_refs"
+      - "evidence_refs"
+      - "blocker_refs"
+      - "next_action"
+id_prefixes:
+  requirement: "REQ-"
+  acceptance: "AC-"
+  non_functional: "NFR-"
+  research_question: "RQ-"
+  evidence: "EVD-"
+  open_source_precedent: "OSS-"
+  decision: "ADR-"
+  contract: "CTR-"
+  risk: "RSK-"
+  phase: "PH-"
+  gate: "GATE-"
+  slice: "SLC-"
+  task: "TSK-"
+  test: "TST-"
+  run: "RUN-"
+  blocker: "BLK-"
+  environment: "ENV-"
+  artifact: "ART-"
+  module: "MODULE-"
+  session: "SESSION-"
+  workstream: "WORKSTREAM-"
+  lease: "LEASE-"
+  handoff: "HANDOFF-"
+mutation_rules:
+  semantic_change_increments_revision: true
+  unknown_values_are_explicit: true
+  duplicate_fact_ownership_forbidden: true
+  failed_evidence_is_append_only: true
+  status_requires_evidence_or_transition_reason: true
+  human_report_is_non_authoritative: true

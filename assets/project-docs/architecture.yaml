@@ -1,0 +1,41 @@
+schema_version: "1.0"
+document_type: "architecture"
+document_id: "ARCHITECTURE"
+revision: 1
+language: "en"
+machine_readable: true
+status: "draft"
+created_at: null
+updated_at: null
+owners: []
+source_refs: []
+product_spec_ref: "PRODUCT-SPEC"
+research_decision_refs: []
+baseline:
+  repository: null
+  commit: null
+  environment_refs: []
+context:
+  purpose: null
+  system_boundaries: []
+  external_actor_refs: []
+  external_systems: []
+  trust_boundaries: []
+  contracts_to_preserve: []
+  constraints: []
+  non_goals: []
+current_state_observations: []
+views:
+  context: []
+  components: []
+  data: []
+  sequences: []
+  deployment: []
+  security_privacy: []
+  operations: []
+contracts: []
+decision_refs: []
+risks: []
+validation_architecture: []
+history: []
+

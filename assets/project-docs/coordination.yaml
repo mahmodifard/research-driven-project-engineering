@@ -1,0 +1,29 @@
+schema_version: "1.0"
+document_type: "parallel_work_coordination"
+document_id: "COORDINATION"
+revision: 1
+language: "en"
+machine_readable: true
+status: "draft"
+created_at: null
+updated_at: null
+owners: []
+source_refs: []
+enabled_by_authority_ref: null
+integration_baseline:
+  repository: null
+  branch: null
+  commit: null
+  project_control_revision_ref: null
+integrator_session_ref: null
+participants: []
+workstreams: []
+leases: []
+resource_allocations: []
+dependency_edges: []
+proposed_evidence: []
+handoffs: []
+integration_queue: []
+conflicts: []
+events: []
+

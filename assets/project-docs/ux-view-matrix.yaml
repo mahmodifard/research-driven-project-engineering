@@ -1,0 +1,21 @@
+schema_version: "1.0"
+document_type: "ux_view_matrix"
+document_id: "UX-VIEW-MATRIX"
+revision: 1
+language: "en"
+machine_readable: true
+status: "draft"
+created_at: null
+updated_at: null
+owners: []
+source_refs: []
+product_spec_ref: "PRODUCT-SPEC"
+viewpoints: []
+role_journeys: []
+interaction_states: []
+windows: []
+accessibility_localization_profiles: []
+viewpoint_conflicts: []
+validation_evidence_refs: []
+history: []
+

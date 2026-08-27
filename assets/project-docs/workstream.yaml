@@ -1,0 +1,44 @@
+schema_version: "1.0"
+document_type: "parallel_workstream"
+document_id: "WORKSTREAM-000"
+revision: 1
+language: "en"
+machine_readable: true
+status: "draft"
+created_at: null
+updated_at: null
+owners: []
+source_refs: []
+coordination_ref: "COORDINATION"
+role: "researcher_read_only"
+session_ref: null
+baseline:
+  repository: null
+  branch: null
+  commit: null
+  control_revision_refs: []
+scope:
+  module_refs: []
+  task_refs: []
+  requirement_refs: []
+  contract_refs: []
+  path_specs: []
+  runtime_resource_refs: []
+authority:
+  allowed_actions: []
+  forbidden_actions: []
+dependencies: []
+expected_outputs: []
+lease_refs: []
+workflow_state: "planned"
+result:
+  artifact_refs: []
+  changed_record_ids: []
+  inspected_paths: []
+  changed_paths: []
+  evidence_refs: []
+  failed_run_refs: []
+  blocker_refs: []
+  merge_prerequisites: []
+  required_next_authority: null
+handoff_ref: null

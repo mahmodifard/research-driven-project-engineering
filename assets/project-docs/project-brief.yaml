@@ -1,0 +1,44 @@
+schema_version: "1.0"
+document_type: "project_brief"
+document_id: "PROJECT-BRIEF"
+revision: 1
+language: "en"
+machine_readable: true
+status: "draft"
+created_at: null
+updated_at: null
+owners: []
+source_refs: []
+authority:
+  mode: "discovery"
+  allowed_actions: []
+  forbidden_actions: []
+  approval_boundaries: []
+baseline:
+  repository: null
+  workspace: null
+  branch: null
+  commit: null
+  artifact_refs: []
+  environment_refs: []
+  dirty_state: "unknown"
+problem:
+  statement: null
+  affected_user_refs: []
+  affected_workflow_refs: []
+  observed_evidence_refs: []
+  consequences: []
+  contradictions: []
+outcome:
+  target: null
+  measures: []
+  in_scope: []
+  non_goals: []
+  constraints: []
+  compatibility_promises: []
+assumptions: []
+unknowns: []
+stakeholders: []
+initial_gates: []
+history: []
+

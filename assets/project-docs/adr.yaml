@@ -1,0 +1,35 @@
+schema_version: "1.0"
+document_type: "architecture_decision_record"
+document_id: "ADR-000"
+revision: 1
+language: "en"
+machine_readable: true
+status: "proposed"
+created_at: null
+updated_at: null
+owners: []
+source_refs: []
+title: null
+requirement_refs: []
+research_question_refs: []
+context:
+  decision_question: null
+  drivers: []
+  constraints: []
+  observed_evidence_refs: []
+  inferences: []
+  unknowns: []
+options: []
+decision:
+  selected_option_id: null
+  rationale: null
+  approved_by: []
+  approved_at: null
+consequences: []
+validation_plan: []
+rollout_plan: []
+rollback_trigger: null
+revisit_triggers: []
+supersedes: []
+superseded_by: null
+history: []
