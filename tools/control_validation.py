@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import re
 from copy import deepcopy
+from datetime import datetime
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -215,6 +216,228 @@ def _validate_records(
                 errors.append(
                     f"{path}:{location}.{field}: expected constant {expected_value!r}, got {record.get(field)!r}"
                 )
+        for field in contract.get("non_null_fields", []):
+            if field in record and record.get(field) is None:
+                errors.append(f"{path}:{location}.{field}: value must not be null")
+
+
+def _parse_utc_timestamp(value: Any) -> datetime | None:
+    if not isinstance(value, str) or not value.endswith("Z"):
+        return None
+    try:
+        parsed = datetime.fromisoformat(value[:-1] + "+00:00")
+    except ValueError:
+        return None
+    return parsed if parsed.utcoffset() is not None else None
+
+
+def _validate_north_star_constitution(
+    documents: dict[Path, dict[str, Any]],
+    errors: list[str],
+) -> None:
+    for path, document in documents.items():
+        if document.get("document_type") != "north_star_review":
+            continue
+
+        raw_versions = document.get("north_star_versions", [])
+        raw_events = document.get("north_star_events", [])
+        raw_reviews = document.get("reviews", [])
+        raw_bindings = document.get("review_bindings", [])
+        versions = [value for value in raw_versions if isinstance(value, dict)] if isinstance(raw_versions, list) else []
+        events = [value for value in raw_events if isinstance(value, dict)] if isinstance(raw_events, list) else []
+        reviews = [value for value in raw_reviews if isinstance(value, dict)] if isinstance(raw_reviews, list) else []
+        bindings = [value for value in raw_bindings if isinstance(value, dict)] if isinstance(raw_bindings, list) else []
+
+        version_by_id: dict[str, dict[str, Any]] = {}
+        version_numbers: list[int] = []
+        effective_at_by_id: dict[str, datetime] = {}
+        for index, version in enumerate(versions):
+            location = f"{path}:north_star_versions[{index}]"
+            version_id = version.get("id")
+            if isinstance(version_id, str) and version_id:
+                version_by_id[version_id] = version
+
+            version_number = version.get("version")
+            if not isinstance(version_number, int) or isinstance(version_number, bool) or version_number < 1:
+                errors.append(f"{location}.version: value must be a positive integer")
+            else:
+                version_numbers.append(version_number)
+
+            objective = version.get("objective")
+            if not isinstance(objective, str) or not objective.strip():
+                errors.append(f"{location}.objective: value must be a non-empty string")
+            for field in ("target_user_refs", "outcome_metric_refs"):
+                value = version.get(field)
+                if not isinstance(value, list) or not value:
+                    errors.append(f"{location}.{field}: value must be a non-empty list")
+            for field in ("invariant_refs", "non_goal_refs", "evidence_refs", "decision_refs", "source_refs"):
+                if not isinstance(version.get(field), list):
+                    errors.append(f"{location}.{field}: value must be a list")
+
+            provenance = []
+            for field in ("evidence_refs", "decision_refs", "source_refs"):
+                value = version.get(field)
+                if isinstance(value, list):
+                    provenance.extend(item for item in value if isinstance(item, str) and item.strip())
+            if not provenance:
+                errors.append(f"{location}: at least one evidence, decision, or source reference is required")
+
+            for field in ("approved_by_ref", "change_reason"):
+                value = version.get(field)
+                if not isinstance(value, str) or not value.strip():
+                    errors.append(f"{location}.{field}: value must be a non-empty string")
+
+            timestamps: dict[str, datetime] = {}
+            for field in ("created_at", "approved_at", "effective_at"):
+                parsed = _parse_utc_timestamp(version.get(field))
+                if parsed is None:
+                    errors.append(f"{location}.{field}: value must be an ISO 8601 UTC timestamp")
+                else:
+                    timestamps[field] = parsed
+            if set(timestamps) == {"created_at", "approved_at", "effective_at"}:
+                if timestamps["created_at"] > timestamps["approved_at"]:
+                    errors.append(f"{location}: created_at must not be later than approved_at")
+                if timestamps["approved_at"] > timestamps["effective_at"]:
+                    errors.append(f"{location}: approved_at must not be later than effective_at")
+            if isinstance(version_id, str) and "effective_at" in timestamps:
+                effective_at_by_id[version_id] = timestamps["effective_at"]
+
+        if version_numbers:
+            expected_numbers = list(range(1, len(version_numbers) + 1))
+            if version_numbers != expected_numbers:
+                errors.append(
+                    f"{path}:north_star_versions: versions must be ordered and contiguous from 1; got {version_numbers!r}"
+                )
+
+        ordered_versions = sorted(
+            (value for value in versions if isinstance(value.get("version"), int) and not isinstance(value.get("version"), bool)),
+            key=lambda value: value["version"],
+        )
+        for index, version in enumerate(ordered_versions):
+            location = f"{path}:north_star_versions[{index}]"
+            expected_previous = None if index == 0 else ordered_versions[index - 1].get("id")
+            if version.get("supersedes_ref") != expected_previous:
+                errors.append(
+                    f"{location}.supersedes_ref: expected {expected_previous!r}, got {version.get('supersedes_ref')!r}"
+                )
+            if index > 0:
+                previous_id = ordered_versions[index - 1].get("id")
+                current_id = version.get("id")
+                previous_time = effective_at_by_id.get(previous_id)
+                current_time = effective_at_by_id.get(current_id)
+                if previous_time is not None and current_time is not None and current_time <= previous_time:
+                    errors.append(f"{location}.effective_at: value must be later than the superseded version")
+
+        events_by_version: dict[str, list[tuple[int, dict[str, Any]]]] = {}
+        event_version_order: list[str] = []
+        for index, event in enumerate(events):
+            location = f"{path}:north_star_events[{index}]"
+            version_ref = event.get("north_star_version_ref")
+            if not isinstance(version_ref, str) or version_ref not in version_by_id:
+                errors.append(f"{location}.north_star_version_ref: unknown North Star version {version_ref!r}")
+                continue
+            events_by_version.setdefault(version_ref, []).append((index, event))
+            event_version_order.append(version_ref)
+            if _parse_utc_timestamp(event.get("occurred_at")) is None:
+                errors.append(f"{location}.occurred_at: value must be an ISO 8601 UTC timestamp")
+            for field in ("authorized_by_ref", "reason"):
+                value = event.get(field)
+                if not isinstance(value, str) or not value.strip():
+                    errors.append(f"{location}.{field}: value must be a non-empty string")
+
+        expected_version_order = [value.get("id") for value in ordered_versions if isinstance(value.get("id"), str)]
+        if event_version_order and event_version_order != expected_version_order:
+            errors.append(
+                f"{path}:north_star_events: events must follow version order {expected_version_order!r}; got {event_version_order!r}"
+            )
+
+        for index, version in enumerate(ordered_versions):
+            version_id = version.get("id")
+            matching_events = events_by_version.get(version_id, [])
+            if len(matching_events) != 1:
+                errors.append(
+                    f"{path}:north_star_versions[{index}]: version {version_id!r} must have exactly one activation event"
+                )
+                continue
+            event_index, event = matching_events[0]
+            location = f"{path}:north_star_events[{event_index}]"
+            expected_type = "activation" if index == 0 else "supersession"
+            expected_previous = None if index == 0 else ordered_versions[index - 1].get("id")
+            if event.get("event_type") != expected_type:
+                errors.append(f"{location}.event_type: expected {expected_type!r}")
+            if event.get("previous_active_version_ref") != expected_previous:
+                errors.append(
+                    f"{location}.previous_active_version_ref: expected {expected_previous!r}, got {event.get('previous_active_version_ref')!r}"
+                )
+            if event.get("occurred_at") != version.get("effective_at"):
+                errors.append(f"{location}.occurred_at: value must equal the version effective_at")
+
+        next_effective_by_id: dict[str, datetime] = {}
+        for index, version in enumerate(ordered_versions[:-1]):
+            current_id = version.get("id")
+            next_id = ordered_versions[index + 1].get("id")
+            if isinstance(current_id, str) and next_id in effective_at_by_id:
+                next_effective_by_id[current_id] = effective_at_by_id[next_id]
+
+        review_by_id = {
+            review.get("id"): review
+            for review in reviews
+            if isinstance(review.get("id"), str) and review.get("id")
+        }
+        bindings_by_review: dict[str, list[tuple[int, dict[str, Any]]]] = {}
+        for index, binding in enumerate(bindings):
+            location = f"{path}:review_bindings[{index}]"
+            review_ref = binding.get("review_ref")
+            version_ref = binding.get("north_star_version_ref")
+            if not isinstance(review_ref, str) or review_ref not in review_by_id:
+                errors.append(f"{location}.review_ref: unknown North Star review {review_ref!r}")
+            else:
+                bindings_by_review.setdefault(review_ref, []).append((index, binding))
+            if not isinstance(version_ref, str) or version_ref not in version_by_id:
+                errors.append(f"{location}.north_star_version_ref: unknown North Star version {version_ref!r}")
+            if _parse_utc_timestamp(binding.get("bound_at")) is None:
+                errors.append(f"{location}.bound_at: value must be an ISO 8601 UTC timestamp")
+            limitations = binding.get("limitations")
+            if not isinstance(limitations, list) or not limitations:
+                errors.append(f"{location}.limitations: legacy migration limitations must be a non-empty list")
+            provenance = []
+            for field in ("evidence_refs", "source_refs"):
+                value = binding.get(field)
+                if isinstance(value, list):
+                    provenance.extend(item for item in value if isinstance(item, str) and item.strip())
+            if not provenance:
+                errors.append(f"{location}: at least one evidence or source reference is required")
+
+        for index, review in enumerate(reviews):
+            location = f"{path}:reviews[{index}]"
+            version_ref = review.get("north_star_version_ref")
+            review_id = review.get("id")
+            matching_bindings = bindings_by_review.get(review_id, []) if isinstance(review_id, str) else []
+            if version_ref is None:
+                if review.get("north_star_ref") != "NORTH-STAR-REVIEW":
+                    errors.append(f"{location}: review must pin north_star_version_ref")
+                    continue
+                if len(matching_bindings) != 1:
+                    errors.append(
+                        f"{location}: legacy review {review_id!r} must have exactly one immutable migration binding"
+                    )
+                    continue
+                version_ref = matching_bindings[0][1].get("north_star_version_ref")
+            elif matching_bindings:
+                errors.append(f"{location}: directly versioned review must not have a legacy migration binding")
+            if not isinstance(version_ref, str) or version_ref not in version_by_id:
+                errors.append(f"{location}.north_star_version_ref: unknown North Star version {version_ref!r}")
+                continue
+            reviewed_at = _parse_utc_timestamp(review.get("reviewed_at"))
+            if reviewed_at is None:
+                errors.append(f"{location}.reviewed_at: value must be an ISO 8601 UTC timestamp")
+                continue
+            effective_at = effective_at_by_id.get(version_ref)
+            next_effective_at = next_effective_by_id.get(version_ref)
+            if effective_at is not None and reviewed_at < effective_at:
+                errors.append(f"{location}: review predates North Star version {version_ref!r}")
+            if next_effective_at is not None and reviewed_at >= next_effective_at:
+                errors.append(f"{location}: North Star version {version_ref!r} was no longer effective at review time")
 
 
 def _validate_references(
@@ -343,6 +566,7 @@ def validate_control_directory(
         _validate_records(path, document, vocabulary, errors)
     identifiers = _all_identifiers(documents, errors)
     _validate_references(documents, vocabulary, identifiers, errors)
+    _validate_north_star_constitution(documents, errors)
 
     if previous_root is not None:
         previous_documents = _load_documents(previous_root, errors)
