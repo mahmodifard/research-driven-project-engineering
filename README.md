@@ -9,6 +9,7 @@ The skill combines:
 - English-only, machine-readable project control artifacts;
 - hierarchical roadmaps for large modules;
 - explicit multi-session and multi-agent coordination;
+- independent North Star product-alignment review at material gates;
 - risk-based testing and real-path delivery verification;
 - progress audits that separate capability gains from activity.
 
@@ -109,6 +110,12 @@ Parallel execution is enabled only when the user authorizes it. The coordination
 
 See [`parallel-work-coordination.md`](references/parallel-work-coordination.md).
 
+## North Star reviewer
+
+At material product, architecture, roadmap, module, convergence, and delivery checkpoints, the workflow uses a stable read-only `north_star_reviewer` when independent delegation is authorized. It challenges whether technically valid work still advances the final product outcome, remains consumable, avoids conflicts with current paths, and keeps adoption friction proportional to value.
+
+The role is advisory and cannot edit, commit, push, deploy, stop processes, or block a gate. When an independent reviewer is unavailable, the workflow records a labeled local self-check instead of claiming independent review. Accepted review records are machine-readable and immutable after append. See [`north-star-review.md`](references/north-star-review.md).
+
 ## Repository structure
 
 ```text
@@ -139,7 +146,7 @@ A green workflow means package and declared semantic contracts passed. It does *
 
 ## Status
 
-The public candidate is `0.2.0`. It has structural and semantic contract validation plus a provider-neutral activation-eval manifest and scorer. It has not yet accumulated a multi-model regression baseline or controlled evidence across representative real projects; those remain required before a `1.0.0` stability claim.
+The public candidate is `0.3.0`. It has structural and semantic contract validation, an executable North Star review contract, plus a provider-neutral activation-eval manifest and scorer. It has not yet accumulated a multi-model regression baseline or controlled evidence across representative real projects; those remain required before a `1.0.0` stability claim.
 
 ## License
 

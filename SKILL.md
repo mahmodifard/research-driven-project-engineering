@@ -52,6 +52,8 @@ For a large bounded module, read [references/modular-document-topology.md](refer
 
 When the user authorizes multiple sessions, agents, or parallel workstreams, read [references/parallel-work-coordination.md](references/parallel-work-coordination.md) before delegation or edits. Create `coordination.yaml`, assign one writer per owned scope, reserve root control files for the integrator, isolate branches/worktrees/runtime resources, and require post-merge integration evidence. Do not start parallel agents merely because parallelism is possible.
 
+Read [references/north-star-review.md](references/north-star-review.md) after the product North Star is established. At its required material checkpoints, use a dedicated read-only `north_star_reviewer` subagent when delegation is available and authorized; otherwise run the same questions as a labeled local self-check. The reviewer challenges product alignment, consumability, integration conflict, proportional complexity, and adoption friction. It is advisory, cannot mutate state, and cannot declare a gate blocked. Record accepted outputs in `north-star-review.yaml`; never represent a self-check as independent review.
+
 ## Run the lifecycle
 
 Read [references/lifecycle-and-gates.md](references/lifecycle-and-gates.md) at the start of a new project, substantial feature, migration, or integration. Apply its gates proportionally; do not manufacture heavyweight artifacts for a small task.
@@ -65,7 +67,8 @@ At each material gate:
 3. Perform focused current research and analogous-project review.
 4. Compare alternatives and expose disagreements or uncertainty.
 5. Update the owning artifact and link evidence.
-6. Decide `PASS`, `CONDITIONAL`, or `BLOCKED`; never silently invent a missing contract.
+6. Run the required North Star checkpoint and expose alignment or consumability challenges.
+7. Decide `PASS`, `CONDITIONAL`, or `BLOCKED`; never silently invent a missing contract.
 
 ## Research before decisions
 

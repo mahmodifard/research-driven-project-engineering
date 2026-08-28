@@ -4,6 +4,16 @@ All notable changes to this project are documented in this file.
 
 The project follows Semantic Versioning after the first public release.
 
+## [0.3.0] - 2026-08-28
+
+### Added
+
+- A formal read-only `north_star_reviewer` role for challenging product alignment, consumability, integration conflict, proportional complexity, and adoption friction.
+- Required North Star checkpoints for product specification, architecture, roadmap, large modules/workstreams, material changes, convergence, and delivery.
+- An English-only machine-readable `north-star-review.yaml` template with immutable advisory review records.
+- Executable constants that prevent North Star review records from claiming mutation or blocking authority.
+- Activation and regression coverage for independent North Star review behavior.
+
 ## [0.2.0] - 2026-08-27
 
 ### Added
