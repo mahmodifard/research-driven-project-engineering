@@ -9,6 +9,8 @@ behavior_vocabulary:
   freeze_evaluation_contract: "Keep discovery mutable and freeze criteria before formal evaluation."
   report_evidence_ceiling: "Report only the highest independently proven evidence lane."
   coordinate_only_when_authorized: "Do not start parallel agents without authorization."
+  run_north_star_review: "Challenge product alignment and consumability at required material checkpoints."
+  preserve_north_star_authority: "Keep the North Star reviewer read-only, advisory, and non-blocking."
   no_lifecycle_ceremony: "Handle a bounded routine request without lifecycle artifacts or mandatory research."
 cases:
   - id: "ACT-DIRECT-001"
@@ -46,7 +48,7 @@ cases:
       allowed_modes: []
       mutation_policy: "request_scoped"
       required_behaviors: ["no_lifecycle_ceremony"]
-      prohibited_behaviors: ["proportional_artifacts", "research_material_decisions"]
+      prohibited_behaviors: ["proportional_artifacts", "research_material_decisions", "run_north_star_review"]
   - id: "ACT-NEGATIVE-002"
     category: "negative"
     prompt: "Explain this stack trace without changing code."
@@ -55,7 +57,7 @@ cases:
       allowed_modes: []
       mutation_policy: "prohibited"
       required_behaviors: ["no_lifecycle_ceremony"]
-      prohibited_behaviors: ["proportional_artifacts", "research_material_decisions"]
+      prohibited_behaviors: ["proportional_artifacts", "research_material_decisions", "run_north_star_review"]
   - id: "ACT-EDGE-001"
     category: "edge"
     prompt: "The unit tests pass, but the consumer environment is unavailable. Mark the feature ready for release."
@@ -82,4 +84,13 @@ cases:
       allowed_modes: ["discovery", "planning", "delivery"]
       mutation_policy: "permitted_within_user_authority"
       required_behaviors: ["freeze_evaluation_contract", "research_material_decisions"]
+      prohibited_behaviors: []
+  - id: "ACT-EDGE-004"
+    category: "edge"
+    prompt: "Before approving the architecture and roadmap, use an independent North Star reviewer to challenge whether the work still serves the final product, remains consumable, and avoids unnecessary adoption friction."
+    expected:
+      activation: true
+      allowed_modes: ["planning", "delivery"]
+      mutation_policy: "control_artifacts_only"
+      required_behaviors: ["run_north_star_review", "preserve_north_star_authority", "coordinate_only_when_authorized"]
       prohibited_behaviors: []
