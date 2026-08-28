@@ -1,7 +1,7 @@
 schema_version: "1.0"
 document_type: "parallel_work_coordination"
 document_id: "COORDINATION"
-revision: 1
+revision: 2
 language: "en"
 machine_readable: true
 status: "draft"
@@ -16,6 +16,7 @@ integration_baseline:
   commit: null
   project_control_revision_ref: null
 integrator_session_ref: null
+north_star_reviewer_session_ref: null
 participants: []
 workstreams: []
 leases: []
@@ -26,4 +27,3 @@ handoffs: []
 integration_queue: []
 conflicts: []
 events: []
-

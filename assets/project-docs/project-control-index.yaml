@@ -1,7 +1,7 @@
 schema_version: "1.0"
 document_type: "project_control_index"
 document_id: "PROJECT-CONTROL-INDEX"
-revision: 1
+revision: 2
 language: "en"
 machine_readable: true
 status: "draft"
@@ -17,6 +17,6 @@ modules: []
 cross_module_contract_refs: []
 shared_gate_refs: []
 coordination_ref: null
+north_star_review_ref: null
 inconsistencies: []
 history: []
-

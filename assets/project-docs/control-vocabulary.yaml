@@ -1,12 +1,12 @@
 schema_version: "1.0"
 document_type: "control_vocabulary"
 document_id: "CONTROL-VOCABULARY"
-revision: 2
+revision: 3
 language: "en"
 machine_readable: true
 status: "active"
 created_at: null
-updated_at: "2026-08-27T17:53:08Z"
+updated_at: "2026-08-28T14:05:10Z"
 owners: []
 source_refs: []
 enums:
@@ -73,8 +73,49 @@ enums:
     - "module_writer"
     - "researcher_read_only"
     - "reviewer_read_only"
+    - "north_star_reviewer"
     - "coordinator_read_only"
     - "runtime_validator"
+  north_star_checkpoint_kind:
+    - "product_spec"
+    - "architecture"
+    - "roadmap"
+    - "module_start"
+    - "workstream_start"
+    - "slice_checkpoint"
+    - "material_change"
+    - "convergence"
+    - "delivery"
+    - "recovery"
+  north_star_reviewer_mode:
+    - "independent_subagent"
+    - "independent_session"
+    - "local_self_check"
+  north_star_alignment:
+    - "aligned"
+    - "at_risk"
+    - "misaligned"
+    - "unknown"
+  north_star_product_value:
+    - "high"
+    - "medium"
+    - "low"
+    - "unproven"
+  north_star_consumability:
+    - "ready"
+    - "partial"
+    - "not_ready"
+    - "unknown"
+  north_star_risk_level:
+    - "low"
+    - "medium"
+    - "high"
+    - "unknown"
+  north_star_recommendation:
+    - "continue"
+    - "reframe"
+    - "validate"
+    - "escalate"
   blocker_status:
     - "open"
     - "resolved"
@@ -220,6 +261,42 @@ record_contracts:
       - "evidence_refs"
       - "blocker_refs"
       - "next_action"
+  north_star_review:
+    id_prefix: "north_star_review"
+    enum_fields:
+      checkpoint_kind: "north_star_checkpoint_kind"
+      reviewer_mode: "north_star_reviewer_mode"
+      alignment: "north_star_alignment"
+      product_value: "north_star_product_value"
+      consumability: "north_star_consumability"
+      integration_risk: "north_star_risk_level"
+      adoption_friction: "north_star_risk_level"
+      recommendation: "north_star_recommendation"
+    constant_fields:
+      reviewer_role: "north_star_reviewer"
+      blocking_authority: false
+    required_fields:
+      - "id"
+      - "checkpoint_kind"
+      - "checkpoint_ref"
+      - "baseline_ref"
+      - "north_star_ref"
+      - "reviewer_session_ref"
+      - "reviewer_role"
+      - "reviewer_mode"
+      - "alignment"
+      - "product_value"
+      - "consumability"
+      - "integration_risk"
+      - "adoption_friction"
+      - "evidence_refs"
+      - "findings"
+      - "challenges"
+      - "evidence_required"
+      - "recommendation"
+      - "blocking_authority"
+      - "reviewed_at"
+    immutable_after_append: true
 artifact_contracts:
   roadmap:
     collections:
@@ -241,6 +318,9 @@ artifact_contracts:
       leases: "lease"
       proposed_evidence: "evidence"
       handoffs: "handoff"
+  north_star_review:
+    collections:
+      reviews: "north_star_review"
 document_enum_fields:
   product_spec:
     contract.mode: "contract_mode"
@@ -307,6 +387,7 @@ id_prefixes:
   workstream: "WORKSTREAM-"
   lease: "LEASE-"
   handoff: "HANDOFF-"
+  north_star_review: "NSR-"
 mutation_rules:
   semantic_change_increments_revision: true
   unknown_values_are_explicit: true
