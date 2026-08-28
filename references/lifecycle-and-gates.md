@@ -26,7 +26,7 @@ Define the problem without prescribing the solution:
 - in-scope and non-goals;
 - assumptions, unknowns, and constraints.
 
-Exit: project brief or feature problem statement is grounded. No solution is treated as selected yet.
+Exit: project brief or feature problem statement is grounded. No solution is treated as selected yet. When product intent is approved, record the first immutable North Star constitution version and activation event; do not activate an unapproved or provenance-free objective.
 
 ## G2 - Research and precedents
 
@@ -47,7 +47,7 @@ Define behavior before implementation detail:
 
 Exit: requirements are testable, internally consistent, and versioned. Exploratory contracts may remain mutable during explicitly labeled prototypes, which cannot establish acceptance. Before formal evaluation or an acceptance claim, switch to an evaluation contract and freeze acceptance criteria, benchmark data, model/provider settings when applicable, and environment assumptions.
 
-Before exit, run the product-spec North Star checkpoint. Challenge whether the specified behavior and acceptance contract still serve the approved users and final outcome without creating unnecessary adoption barriers.
+Before exit, run the product-spec North Star checkpoint against the exact constitution version effective at review time. Challenge whether the specified behavior and acceptance contract still serve the approved users and final outcome without creating unnecessary adoption barriers.
 
 ## G4 - Architecture and delivery design
 
@@ -118,3 +118,5 @@ After release or escaped defects, record:
 - whether a template, instruction, architecture constraint, or automated check should change.
 
 Improve the workflow from demonstrated failures; do not accumulate universal rules from isolated anecdotes.
+
+If learning changes the approved product direction, append a new North Star version and supersession event with evidence and authority. Never retrofit the new objective into historical reviews.

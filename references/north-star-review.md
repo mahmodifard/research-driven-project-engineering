@@ -22,6 +22,24 @@ Define the North Star during G1 from user-approved product intent:
 
 Do not invent a product objective from technical activity. If the objective or target consumer is materially ambiguous, return `UNKNOWN` and request the smallest product decision needed.
 
+Exploratory wording may remain mutable before approval. Once approved, append an immutable constitution snapshot to `north_star_versions`; never maintain the approved North Star as a mutable singleton map.
+
+## Versioned constitution and provenance
+
+Each approved North Star version must have:
+
+- a stable `NSV-*` identifier and contiguous positive version number;
+- an atomic objective, target-user references, outcome-metric references, invariants, and non-goals;
+- evidence, decision, or primary source provenance;
+- approval authority and approval/effective timestamps;
+- an explicit change reason and `supersedes_ref` for every version after version 1.
+
+Approved version records are immutable. A product-direction change creates the next version; it never edits an earlier objective, user set, metric, invariant, or non-goal. Versions must form one ordered chain without gaps or branches.
+
+Activation is represented by immutable `NSE-*` events rather than a mutable `active` flag. Version 1 receives an `activation` event. Every later version receives one `supersession` event that names both the new version and the previously active version. The event time must equal the version's `effective_at` timestamp.
+
+Every new `NSR-*` review pins `north_star_version_ref` to the exact constitution effective at `reviewed_at`. A review against a future, unknown, or already superseded version is invalid. This preserves which product law the reviewer actually applied even after the North Star evolves.
+
 ## Required checkpoints
 
 Run a North Star review:
@@ -54,6 +72,7 @@ Distinguish misalignment from missing evidence. Use `UNKNOWN` or `UNPROVEN` when
 Give the reviewer the minimum grounded packet:
 
 - North Star objective, target-user references, outcome metrics, and non-goals;
+- exact North Star version ID, approval provenance, effective time, invariants, and supersession history;
 - current gate, module, workstream, or slice reference;
 - exact repository/artifact baseline and relevant diff or proposal;
 - product specification, architecture decision, roadmap, and evidence references needed for the checkpoint;
@@ -63,14 +82,46 @@ Do not provide the desired verdict or hide failed evidence. The reviewer must be
 
 ## Machine output
 
-Return one record compatible with `assets/project-docs/north-star-review.yaml`:
+The owning writer first records the approved constitution and its activation event:
+
+```yaml
+north_star_versions:
+  - id: "NSV-001"
+    version: 1
+    objective: "Deliver an outcome that the target consumer can use"
+    target_user_refs: ["USER-primary"]
+    outcome_metric_refs: ["METRIC-adoption"]
+    invariant_refs: []
+    non_goal_refs: []
+    evidence_refs: []
+    decision_refs: ["ADR-001"]
+    approved_by_ref: "AUTH-product-owner"
+    approved_at: "2026-08-29T00:00:00Z"
+    effective_at: "2026-08-29T00:00:00Z"
+    supersedes_ref: null
+    change_reason: "Initial approved North Star"
+    created_at: "2026-08-29T00:00:00Z"
+    source_refs: []
+north_star_events:
+  - id: "NSE-001"
+    event_type: "activation"
+    north_star_version_ref: "NSV-001"
+    previous_active_version_ref: null
+    authorized_by_ref: "AUTH-product-owner"
+    reason: "Activate the approved North Star"
+    occurred_at: "2026-08-29T00:00:00Z"
+    evidence_refs: []
+    source_refs: ["user-approval-record"]
+```
+
+The reviewer then returns one record compatible with `assets/project-docs/north-star-review.yaml`:
 
 ```yaml
 id: "NSR-001"
 checkpoint_kind: "architecture"
 checkpoint_ref: "GATE-004"
 baseline_ref: "ART-001"
-north_star_ref: "NORTH-STAR-REVIEW"
+north_star_version_ref: "NSV-001"
 reviewer_session_ref: "SESSION-002"
 reviewer_role: "north_star_reviewer"
 reviewer_mode: "independent_subagent"
@@ -85,8 +136,13 @@ challenges: []
 evidence_required: []
 recommendation: "validate"
 blocking_authority: false
-reviewed_at: null
+reviewed_at: "2026-08-29T01:00:00Z"
 ```
 
 Review records are append-only evidence of the challenge performed at that baseline. A later review supersedes an earlier conclusion; it never rewrites it.
 
+## Migration from 0.3
+
+When an existing project has the 0.3 singleton `north_star` map, do not silently replace or discard it. Convert its last approved meaning into `NSV-001`, attach the strongest available approval and source provenance, append `NSE-001`, increment the document revision, and record migration limitations. If approval, effective time, target user, or outcome metric cannot be grounded, block activation rather than inventing them.
+
+Do not edit an immutable 0.3 review to add `north_star_version_ref`. Preserve the original `NSR-*` record byte-for-byte and append one immutable `NSB-*` `legacy_migration` binding that names the review, reconstructed version, migration authority, timestamp, evidence/source provenance, and unavoidable limitations. A legacy review without exactly one binding is invalid; a new directly versioned review must not receive a legacy binding.

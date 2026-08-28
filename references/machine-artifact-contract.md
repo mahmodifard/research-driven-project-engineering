@@ -44,7 +44,7 @@ Use uppercase prefixes plus numeric or slug suffixes:
 - decisions/ADRs: `ADR-###`, contracts: `CTR-###`, risks: `RSK-###`;
 - roadmap phases/gates/slices/tasks: `PH-###`, `GATE-###`, `SLC-###`, `TSK-###`;
 - test scenarios/runs: `TST-###`, `RUN-<timestamp>-###`;
-- North Star reviews: `NSR-###`;
+- North Star constitution versions: `NSV-###`, activation/supersession events: `NSE-###`, reviews: `NSR-###`, legacy review bindings: `NSB-###`;
 - blockers: `BLK-###`, environments: `ENV-###`, artifacts: `ART-###`.
 
 Never renumber an existing ID. Mark records superseded or retired and link replacements.
@@ -78,7 +78,7 @@ Capability axes:
 - A task references existing requirement, acceptance, slice, decision, and test IDs.
 - A roadmap gate references evidence requirements, never raw conversational claims.
 - Evidence records identify artifact, environment, action/command, result, timestamp, and limitations.
-- North Star review records identify their exact checkpoint, baseline, reviewer mode, evidence, limitations, and advisory recommendation; accepted records are immutable after append.
+- North Star constitution versions preserve objective, user, metric, invariant, non-goal, approval, effective-time, and source provenance as immutable snapshots. Events form the append-only activation/supersession chain. New reviews identify the exact effective `NSV-*` version plus checkpoint, baseline, reviewer mode, evidence, limitations, and advisory recommendation. Immutable pre-0.4 reviews retain their original bytes and receive one append-only `NSB-*` migration binding rather than being rewritten.
 - `project-state.yaml` references tracker/evidence IDs; it does not create new execution facts.
 - If two files disagree, do not silently reconcile them. Add a blocker or inconsistency record and name the owning artifact.
 
