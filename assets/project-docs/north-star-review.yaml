@@ -1,7 +1,7 @@
 schema_version: "1.0"
 document_type: "north_star_review"
 document_id: "NORTH-STAR-REVIEW"
-revision: 1
+revision: 2
 language: "en"
 machine_readable: true
 status: "draft"
@@ -9,11 +9,7 @@ created_at: null
 updated_at: null
 owners: []
 source_refs: []
-north_star:
-  objective: null
-  target_user_refs: []
-  outcome_metric_refs: []
-  non_goal_refs: []
-  source_refs: []
+north_star_versions: []
+north_star_events: []
 reviews: []
-
+review_bindings: []

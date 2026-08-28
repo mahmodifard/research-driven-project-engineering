@@ -1,12 +1,12 @@
 schema_version: "1.0"
 document_type: "control_vocabulary"
 document_id: "CONTROL-VOCABULARY"
-revision: 3
+revision: 4
 language: "en"
 machine_readable: true
 status: "active"
 created_at: null
-updated_at: "2026-08-28T14:05:10Z"
+updated_at: "2026-08-28T22:14:49Z"
 owners: []
 source_refs: []
 enums:
@@ -116,6 +116,11 @@ enums:
     - "reframe"
     - "validate"
     - "escalate"
+  north_star_event_type:
+    - "activation"
+    - "supersession"
+  north_star_binding_kind:
+    - "legacy_migration"
   blocker_status:
     - "open"
     - "resolved"
@@ -280,7 +285,6 @@ record_contracts:
       - "checkpoint_kind"
       - "checkpoint_ref"
       - "baseline_ref"
-      - "north_star_ref"
       - "reviewer_session_ref"
       - "reviewer_role"
       - "reviewer_mode"
@@ -296,6 +300,83 @@ record_contracts:
       - "recommendation"
       - "blocking_authority"
       - "reviewed_at"
+    non_null_fields:
+      - "reviewer_role"
+      - "reviewer_mode"
+      - "reviewed_at"
+    immutable_after_append: true
+  north_star_version:
+    id_prefix: "north_star_version"
+    required_fields:
+      - "id"
+      - "version"
+      - "objective"
+      - "target_user_refs"
+      - "outcome_metric_refs"
+      - "invariant_refs"
+      - "non_goal_refs"
+      - "evidence_refs"
+      - "decision_refs"
+      - "approved_by_ref"
+      - "approved_at"
+      - "effective_at"
+      - "supersedes_ref"
+      - "change_reason"
+      - "created_at"
+      - "source_refs"
+    non_null_fields:
+      - "id"
+      - "version"
+      - "objective"
+      - "approved_by_ref"
+      - "approved_at"
+      - "effective_at"
+      - "change_reason"
+      - "created_at"
+    immutable_after_append: true
+  north_star_event:
+    id_prefix: "north_star_event"
+    enum_fields:
+      event_type: "north_star_event_type"
+    required_fields:
+      - "id"
+      - "event_type"
+      - "north_star_version_ref"
+      - "previous_active_version_ref"
+      - "authorized_by_ref"
+      - "reason"
+      - "occurred_at"
+      - "evidence_refs"
+      - "source_refs"
+    non_null_fields:
+      - "id"
+      - "event_type"
+      - "north_star_version_ref"
+      - "authorized_by_ref"
+      - "reason"
+      - "occurred_at"
+    immutable_after_append: true
+  north_star_review_binding:
+    id_prefix: "north_star_binding"
+    constant_fields:
+      binding_kind: "legacy_migration"
+    required_fields:
+      - "id"
+      - "binding_kind"
+      - "review_ref"
+      - "north_star_version_ref"
+      - "bound_by_ref"
+      - "bound_at"
+      - "evidence_refs"
+      - "limitations"
+      - "source_refs"
+    non_null_fields:
+      - "id"
+      - "binding_kind"
+      - "review_ref"
+      - "north_star_version_ref"
+      - "bound_by_ref"
+      - "bound_at"
     immutable_after_append: true
 artifact_contracts:
   roadmap:
@@ -320,7 +401,10 @@ artifact_contracts:
       handoffs: "handoff"
   north_star_review:
     collections:
+      north_star_versions: "north_star_version"
+      north_star_events: "north_star_event"
       reviews: "north_star_review"
+      review_bindings: "north_star_review_binding"
 document_enum_fields:
   product_spec:
     contract.mode: "contract_mode"
@@ -388,6 +472,9 @@ id_prefixes:
   lease: "LEASE-"
   handoff: "HANDOFF-"
   north_star_review: "NSR-"
+  north_star_version: "NSV-"
+  north_star_event: "NSE-"
+  north_star_binding: "NSB-"
 mutation_rules:
   semantic_change_increments_revision: true
   unknown_values_are_explicit: true
