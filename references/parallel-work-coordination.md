@@ -6,7 +6,8 @@ Activate this protocol only when the user authorizes multiple sessions, agents, 
 
 - One `integrator` owns root control artifacts, shared contracts, integration order, reconciliation, and final status roll-up.
 - One `module_writer` or module lead owns each module's canonical control files. Additional writers may own disjoint slices inside the module only when their record IDs, paths, contracts, migrations, and runtime resources do not overlap.
-- `researcher_read_only`, `reviewer_read_only`, and `coordinator_read_only` may inspect and propose evidence/findings but do not edit, commit, push, deploy, stop processes, or mutate runtime state.
+- `researcher_read_only`, `reviewer_read_only`, `north_star_reviewer`, and `coordinator_read_only` may inspect and propose evidence/findings but do not edit, commit, push, deploy, stop processes, or mutate runtime state.
+- Keep one stable `north_star_reviewer` assignment across material checkpoints when practical so product-direction drift is compared against a consistent charter. Give it fresh baselines and evidence, not the desired verdict.
 - A `runtime_validator` receives an explicit environment/action authorization and never assumes source-write or deployment authority.
 - Every agent/session has an explicit role, scope, baseline, allowed actions, forbidden actions, and expected output contract.
 
@@ -81,4 +82,5 @@ Before claiming coordinated completion, verify:
 - shared runtime resources and temporary state are accounted for;
 - root and module revisions are referentially consistent;
 - no reviewer/researcher exceeded read-only authority;
+- required North Star checkpoints exist for material module, integration, and delivery decisions, with advisory findings resolved or explicitly owned;
 - commit, push, deploy, and external mutations match explicit authorization.

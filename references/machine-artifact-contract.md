@@ -44,6 +44,7 @@ Use uppercase prefixes plus numeric or slug suffixes:
 - decisions/ADRs: `ADR-###`, contracts: `CTR-###`, risks: `RSK-###`;
 - roadmap phases/gates/slices/tasks: `PH-###`, `GATE-###`, `SLC-###`, `TSK-###`;
 - test scenarios/runs: `TST-###`, `RUN-<timestamp>-###`;
+- North Star reviews: `NSR-###`;
 - blockers: `BLK-###`, environments: `ENV-###`, artifacts: `ART-###`.
 
 Never renumber an existing ID. Mark records superseded or retired and link replacements.
@@ -77,6 +78,7 @@ Capability axes:
 - A task references existing requirement, acceptance, slice, decision, and test IDs.
 - A roadmap gate references evidence requirements, never raw conversational claims.
 - Evidence records identify artifact, environment, action/command, result, timestamp, and limitations.
+- North Star review records identify their exact checkpoint, baseline, reviewer mode, evidence, limitations, and advisory recommendation; accepted records are immutable after append.
 - `project-state.yaml` references tracker/evidence IDs; it does not create new execution facts.
 - If two files disagree, do not silently reconcile them. Add a blocker or inconsistency record and name the owning artifact.
 

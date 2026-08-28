@@ -47,17 +47,23 @@ Define behavior before implementation detail:
 
 Exit: requirements are testable, internally consistent, and versioned. Exploratory contracts may remain mutable during explicitly labeled prototypes, which cannot establish acceptance. Before formal evaluation or an acceptance claim, switch to an evaluation contract and freeze acceptance criteria, benchmark data, model/provider settings when applicable, and environment assumptions.
 
+Before exit, run the product-spec North Star checkpoint. Challenge whether the specified behavior and acceptance contract still serve the approved users and final outcome without creating unnecessary adoption barriers.
+
 ## G4 - Architecture and delivery design
 
 Map current and proposed boundaries, components, contracts, data ownership, trust boundaries, deployment topology, operations, and migration/rollback. Compare at least two credible alternatives for a material decision; record durable choices as ADRs.
 
 Exit: the chosen design satisfies the spec, material risks have mitigations, and irreversible decisions are approved.
 
+Before exit, run the architecture North Star checkpoint. Challenge proportional complexity, conflicts with current consumption paths, duplicated capabilities, and integration or adoption cost.
+
 ## G5 - Roadmap, tracker, and test strategy
 
 Decompose into dependency-ordered vertical slices. Define phase gates, acceptance evidence, validation commands, integration points, and release prerequisites.
 
 Exit: the next slice is `READY`; its dependencies, expected behavior, validation, and stop conditions are known.
+
+Before exit, run the roadmap North Star checkpoint. Challenge whether the dependency order and planned slices produce consumable product value rather than technical activity alone.
 
 ## G6 - Incremental implementation
 
@@ -87,6 +93,8 @@ Cross-check spec, architecture, tasks, code, tests, and evidence:
 
 Use an independent review when risk justifies it and delegation is authorized. Review findings before making further changes.
 
+Run the convergence North Star checkpoint independently when delegation is authorized. Reconcile product-alignment findings separately from code, architecture, and test findings.
+
 Exit: no critical gap remains hidden; unresolved items are blocked or explicitly deferred, not silently accepted.
 
 ## G8 - Runtime, release, and handoff
@@ -97,6 +105,8 @@ Exit:
 
 - `GO` only when the required acceptance and delivery evidence is current;
 - otherwise `NO-GO` with the blocking gap, evidence already obtained, smallest next action, and owner/category.
+
+The delivery decision must include a current North Star review of final-product alignment, consumer usability, integration compatibility, and adoption friction. The reviewer advises; the authorized delivery owner makes the decision.
 
 ## G9 - Learning loop
 

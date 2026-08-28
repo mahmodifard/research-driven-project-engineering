@@ -77,6 +77,12 @@ For a requested time window or checkpoint, compare the current snapshot with the
 
 Give a direct verdict: `REAL_PROGRESS`, `PARTIAL_PROGRESS`, `ACTIVITY_WITHOUT_PROOF`, `REGRESSION`, or `INDETERMINATE`. Explain the evidence behind it. Do not use commit count or document volume as a proxy.
 
+## North Star challenge
+
+Use [north-star-review.md](north-star-review.md) at the defined material checkpoints. This review is separate from code quality, architecture correctness, test coverage, and delivery readiness. It asks whether the technically valid work still advances the approved product outcome and remains consumable without disproportionate integration or adoption cost.
+
+Preserve independence: do not tell the reviewer the desired verdict, and do not let the implementation owner rewrite the review. The owning authority may accept, reject, or request evidence in response, but the original review record remains append-only.
+
 ## Multiple windows on the system
 
 Re-examine a design or slice from applicable viewpoints:
