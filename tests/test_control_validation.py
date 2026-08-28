@@ -38,6 +38,31 @@ def _task(state: str = "planned") -> dict:
     }
 
 
+def _north_star_review() -> dict:
+    return {
+        "id": "NSR-001",
+        "checkpoint_kind": "architecture",
+        "checkpoint_ref": None,
+        "baseline_ref": None,
+        "north_star_ref": "NORTH-STAR-REVIEW",
+        "reviewer_session_ref": None,
+        "reviewer_role": "north_star_reviewer",
+        "reviewer_mode": "local_self_check",
+        "alignment": "unknown",
+        "product_value": "unproven",
+        "consumability": "unknown",
+        "integration_risk": "unknown",
+        "adoption_friction": "unknown",
+        "evidence_refs": [],
+        "findings": [],
+        "challenges": [],
+        "evidence_required": [],
+        "recommendation": "validate",
+        "blocking_authority": False,
+        "reviewed_at": None,
+    }
+
+
 class ControlValidationTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temporary = tempfile.TemporaryDirectory()
@@ -158,6 +183,35 @@ class ControlValidationTests(unittest.TestCase):
         errors = self.validate(previous_root)
 
         self.assertTrue(any("immutable record 'EVD-001' was modified" in error for error in errors), errors)
+
+    def test_north_star_reviewer_authority_is_enforced(self) -> None:
+        review_path = self.root / "project-docs" / "north-star-review.yaml"
+        document = _load(review_path)
+        review = _north_star_review()
+        review["reviewer_role"] = "module_writer"
+        review["blocking_authority"] = True
+        document["reviews"] = [review]
+        _save(review_path, document)
+
+        errors = self.validate()
+
+        self.assertTrue(any("reviewer_role: expected constant 'north_star_reviewer'" in error for error in errors), errors)
+        self.assertTrue(any("blocking_authority: expected constant False" in error for error in errors), errors)
+
+    def test_north_star_review_is_immutable_after_append(self) -> None:
+        review_path = self.root / "project-docs" / "north-star-review.yaml"
+        document = _load(review_path)
+        document["reviews"] = [_north_star_review()]
+        _save(review_path, document)
+        previous_root = Path(self.temporary.name) / "previous-assets"
+        shutil.copytree(self.root, previous_root)
+        document["reviews"][0]["alignment"] = "aligned"
+        document["revision"] += 1
+        _save(review_path, document)
+
+        errors = self.validate(previous_root)
+
+        self.assertTrue(any("immutable record 'NSR-001' was modified" in error for error in errors), errors)
 
 
 if __name__ == "__main__":
