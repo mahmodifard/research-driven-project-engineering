@@ -4,6 +4,22 @@ All notable changes to this project are documented in this file.
 
 The project follows Semantic Versioning after the first public release.
 
+## [0.4.0] - 2026-08-29
+
+### Added
+
+- Immutable `NSV-*` North Star constitution snapshots with approval, effective-time, decision, evidence, and source provenance.
+- Append-only `NSE-*` activation and supersession events that derive one ordered product-direction history without mutable active flags.
+- Validator enforcement for contiguous versions, exact supersession parents, event completeness/order, provenance, timestamp ordering, and constitution immutability.
+- Temporal validation that every new `NSR-*` review directly pins the exact North Star version effective at review time, while legacy reviews resolve through an immutable migration binding.
+- Immutable `NSB-*` migration bindings for associating legacy 0.3 reviews with reconstructed constitution versions without rewriting historical review records.
+- Regression and activation-eval cases for history rewriting, version gaps, missing activation events, stale reviews, and superseded product goals.
+
+### Changed
+
+- Replaced the mutable singleton `north_star` map with version and event collections.
+- New North Star reviews now require `north_star_version_ref`; legacy 0.3 reviews retain their document-level reference and use immutable `NSB-*` migration bindings.
+
 ## [0.3.0] - 2026-08-28
 
 ### Added
