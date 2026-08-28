@@ -210,6 +210,11 @@ def _validate_records(
             value = record.get(field)
             if field in record and value not in enums.get(enum_name, []):
                 errors.append(f"{path}:{location}.{field}: invalid {enum_name} value {value!r}")
+        for field, expected_value in contract.get("constant_fields", {}).items():
+            if field in record and record.get(field) != expected_value:
+                errors.append(
+                    f"{path}:{location}.{field}: expected constant {expected_value!r}, got {record.get(field)!r}"
+                )
 
 
 def _validate_references(
